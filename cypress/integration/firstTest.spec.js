@@ -2,7 +2,7 @@
 
 describe('Our first suite', ()  => {
     
-    it('first test', () => {
+    it('Wszystkie typy wyszukiwania elementow w cypress', () => {
 
         cy.visit('/')
         cy.contains('Forms').click()
@@ -39,4 +39,37 @@ describe('Our first suite', ()  => {
         cy.get('[data-cy="imputEmail1"]')
     })
 
+    it('poruszanie sie po DOMie', () => {
+
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click()
+
+
+        //traveling in to dome
+        cy.get('[data-cy="signInButton"]') //wyszukuje rzeczy po calym domie
+        cy.contains('Sign in')
+        cy.contains('[status="warning"]','Sign in')
+        cy.get('#inputEmail3')
+            .parents('form')
+            .find('button') //szuka child elementow
+            .should('contain', 'Sign in')
+            .parents('form')
+            .find('nb-checkbox')
+            .click()
+
+        cy.contains('nb-card', 'Horizontal form') // szuka elementow po tekscie i webselectorze, tylko jeden element moze znalezc
+            .find('[type="email"')
+
+    })
+
+    it.only('then and wrap methods', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click()
+
+        cy.contains('nb-card', 'Using the Grid').find('[for="inputEmail1"]').should('contain', 'email')
+    })
+    
 })
+
