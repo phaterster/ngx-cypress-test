@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Our first suite', ()  => {
+describe('Cypress nauka', ()  => {
     
     it('Wszystkie typy wyszukiwania elementow w cypress', () => {
 
@@ -128,7 +128,25 @@ describe('Our first suite', ()  => {
 
     })
 
-    it('assert property', () => {
+    it.only('assert property, date, funkcje, ify parametry', () => {
+
+        function selectDayFromCurrent(day){
+            let date = new Date()
+            date.setDate(date.getDate() + day)
+            let futureDay = date.getDate()
+            let futureMonth = date.toLocaleString('default', {month: 'short'})
+            let dateAssert = futureMonth + ' ' + futureDay + ', ' + date.getFullYear()
+            cy.get('nb-calendar-navigation').invoke('attr', 'ng-reflect-date').then(dateAttribute =>{
+                if(!dateAttribute.includes(futureMonth)){
+                    cy.get('[data-name="chevron-right"]').click()
+                    selectDayFromCurrent(day)
+                } else{
+                    cy.get('nb-calendar-day-picker [class="day-cell ng-star-inserted"]').contains(futureDay).click()
+                }
+            }) 
+            return dateAssert
+        } 
+
         cy.visit('/')
         cy.contains('Forms').click()
         cy.contains('Datepicker').click()
@@ -137,8 +155,8 @@ describe('Our first suite', ()  => {
             .find('input')
             .then(input => {
                 cy.wrap(input).click()
-                cy.get('nb-calendar-day-picker').contains('17').click()
-                cy.wrap(input).invoke('prop', 'value').should('contain', 'Jun 17, 2021')
+                let dateAssert = selectDayFromCurrent(40)
+                cy.wrap(input).invoke('prop', 'value').should('contain', dateAssert)
 
             })
     })
@@ -211,7 +229,7 @@ describe('Our first suite', ()  => {
             })
         })
     })
-    it.only('Web tables, czyszczenie clear, if else each', () =>{
+    it('Web tables, czyszczenie clear, if else each', () =>{
 
     
         cy.visit('/')
