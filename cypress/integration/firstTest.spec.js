@@ -305,7 +305,7 @@ describe('Cypress nauka', ()  => {
          //3
          cy.get('tbody tr').first().find('.nb-trash').click()
          cy.on('window:confirm', () => false)
-         })
+         
 
 
     })
